@@ -1,0 +1,54 @@
+# dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# testing
+coverage/
+
+# Next.js
+.next/
+out/
+
+# production
+build/
+
+# Vercel local configuration
+.vercel/
+
+# environment files
+.env
+.env.local
+.env.*.local
+
+# TypeScript cache
+*.tsbuildinfo
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# archives and temporary packages
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.tmp
+*.temp
+
+# miscellaneous
+.DS_Store
+Thumbs.db
+*.pem
+
+# Codex handoff/source artifacts must never be deployed from project root
+/CODEX_*.ts
+/CODEX_*.tsx
+/CODEX_*.js
+/CODEX_*.jsx
+/CODEX_*.mjs
+/CODEX_*.cjs
