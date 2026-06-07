@@ -31,9 +31,9 @@ export async function GET() {
     {
       ok: true,
       generatedAt: new Date().toISOString(),
+      ...radar,
       boundary:
         "Cross-asset anomaly radar only. Not bankruptcy prediction, not exchange certification, not proof of solvency and not investment advice.",
-      ...radar,
       exchangeHealth,
       humanCopy,
       globalRiskMap,

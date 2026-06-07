@@ -3470,6 +3470,44 @@ try {
 }
 // guard script marker: verify-pass264-trust-narrative-guard-dark-pattern-firewall-safety.mjs
 
+// PASS474 duplicate response-key / object-spread ordering guard
+try {
+  const spreadContracts = [
+    {
+      file: "app/api/market-integrity/ai-human-copy/route.ts",
+      spread: "...copyEngine",
+      property: "boundary:",
+    },
+    {
+      file: "app/api/market-integrity/cross-asset/route.ts",
+      spread: "...radar",
+      property: "boundary:",
+    },
+    {
+      file: "app/api/market-integrity/exchange-health/route.ts",
+      spread: "...exchangeHealth",
+      property: "boundary:",
+    },
+  ];
+
+  for (const contract of spreadContracts) {
+    const source = read(contract.file);
+    const spreadIndex = source.indexOf(contract.spread);
+    const propertyIndex = source.indexOf(contract.property);
+    if (spreadIndex < 0 || propertyIndex < 0) {
+      errors.push(`${contract.file}: missing PASS474 response contract marker.`);
+      continue;
+    }
+    if (propertyIndex < spreadIndex) {
+      errors.push(
+        `${contract.file}: ${contract.property.slice(0, -1)} must be declared after ${contract.spread} so the explicit API safety boundary wins without TS2783 duplicate-key failure.`,
+      );
+    }
+  }
+} catch (error) {
+  errors.push(`PASS474 duplicate response-key guard failed: ${error instanceof Error ? error.message : String(error)}`);
+}
+
 if (errors.length) {
   console.error("Velmère late preflight guards failed:");
   for (const error of errors) console.error(`- ${error}`);

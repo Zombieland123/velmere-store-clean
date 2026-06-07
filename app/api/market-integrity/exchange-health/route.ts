@@ -10,9 +10,9 @@ export async function GET() {
     {
       ok: true,
       generatedAt: new Date().toISOString(),
+      ...exchangeHealth,
       boundary:
         "Exchange Health adapter skeleton only. Not bankruptcy prediction, not proof of solvency, not investment advice and not a public accusation engine.",
-      ...exchangeHealth,
     },
     {
       headers: {
