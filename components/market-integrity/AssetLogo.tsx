@@ -12,10 +12,20 @@ export default function AssetLogo({
   compact = false,
   ...input
 }: VelmereAssetLogoInput & { className?: string; compact?: boolean }) {
+  const { assetClass, id, imageUrl, name, symbol, venue } = input;
   const resolution = useMemo(
-    () => resolveVelmereAssetLogo(input),
-    [input.assetClass, input.id, input.imageUrl, input.name, input.symbol, input.venue],
+    () =>
+      resolveVelmereAssetLogo({
+        assetClass,
+        id,
+        imageUrl,
+        name,
+        symbol,
+        venue,
+      }),
+    [assetClass, id, imageUrl, name, symbol, venue],
   );
+  const imageCandidatesKey = resolution.imageCandidates.join("|");
   const [candidateIndex, setCandidateIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const src = resolution.imageCandidates[candidateIndex];
@@ -23,7 +33,7 @@ export default function AssetLogo({
   useEffect(() => {
     setCandidateIndex(0);
     setLoaded(false);
-  }, [resolution.symbol, resolution.imageCandidates.join("|")]);
+  }, [resolution.symbol, imageCandidatesKey]);
 
   return (
     <span

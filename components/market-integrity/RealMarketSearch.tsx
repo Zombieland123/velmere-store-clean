@@ -104,6 +104,9 @@ export default function RealMarketSearch() {
             }
           }}
           placeholder="Szukaj: NVDA, Apple, gold, EUR/USD, REIT..."
+          role="combobox"
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
           aria-label="Szukaj instrumentu w Real Markets"
           aria-expanded={open && query.trim().length >= 2}
           aria-controls="real-market-search-results"

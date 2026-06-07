@@ -3109,11 +3109,21 @@ export default function CrossAssetCollapseRadarPanel({
     };
   }, [selected]);
 
+  const visibleProviderSymbolsKey = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          rows
+            .slice(0, visibleLimit)
+            .map((asset) => asset.providerSymbol)
+            .filter(Boolean),
+        ),
+      ).join(","),
+    [rows, visibleLimit],
+  );
+
   useEffect(() => {
-    const quoteRows = rows.slice(0, visibleLimit);
-    const symbols = Array.from(
-      new Set(quoteRows.map((asset) => asset.providerSymbol)),
-    );
+    const symbols = visibleProviderSymbolsKey.split(",").filter(Boolean);
     if (!symbols.length) return;
     const controller = new AbortController();
     const chunks = Array.from(
@@ -3143,13 +3153,15 @@ export default function CrossAssetCollapseRadarPanel({
       .catch(() => undefined)
       .finally(() => setLoading(false));
     return () => controller.abort();
-  }, [visibleLimit, rows.map((row) => row.providerSymbol).join(",")]);
+  }, [visibleProviderSymbolsKey]);
+
+  const selectedProviderSymbol = selected?.providerSymbol ?? "";
 
   useEffect(() => {
-    if (!selected) return;
+    if (!selectedProviderSymbol) return;
     const controller = new AbortController();
     fetch(
-      `/api/market-integrity/real-markets?symbols=${encodeURIComponent(selected.providerSymbol)}&range=${range}&detail=1`,
+      `/api/market-integrity/real-markets?symbols=${encodeURIComponent(selectedProviderSymbol)}&range=${range}&detail=1`,
       { signal: controller.signal },
     )
       .then((response) => response.json())
@@ -3160,7 +3172,7 @@ export default function CrossAssetCollapseRadarPanel({
       })
       .catch(() => undefined);
     return () => controller.abort();
-  }, [range, selected?.providerSymbol]);
+  }, [range, selectedProviderSymbol]);
 
   const selectedQuote = selected ? quotes[selected.providerSymbol] : undefined;
   const selectedRisk = dynamicRisk(selectedQuote, selected?.risk);

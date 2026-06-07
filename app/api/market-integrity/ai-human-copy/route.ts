@@ -14,12 +14,12 @@ export async function GET(request: Request) {
 
   return NextResponse.json(
     {
+      ...copyEngine,
       ok: true,
       generatedAt: new Date().toISOString(),
       boundary:
-        "AI Human Copy Engine is a public-copy translator. not investment advice. Not safety guarantees. Not bankruptcy claims. Not public accusations. Not buy/sell signals.",
+        "AI Human Copy Engine is a public-copy translator. Not investment advice. Not a safety guarantee. Not a bankruptcy claim. Not a public accusation. Not a buy/sell signal.",
       translated: raw ? humanizeShieldCopy(raw) : null,
-      ...copyEngine,
     },
     {
       headers: {
