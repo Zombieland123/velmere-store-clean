@@ -196,7 +196,7 @@ export function buildTerminalReviewDeck(
       (result.metaModel?.requiredReview ? 8 : 0) +
       Math.min(12, result.signals.length * 3),
   );
-  const sourceScore = clamp(sourceTrust.sourceTrustScore);
+  const sourceScore = clamp(sourceTrust.trustScore);
   const aiScore = clamp(
     36 +
       Math.round((result.confidence ?? 0.35) * 24) +
@@ -229,7 +229,7 @@ export function buildTerminalReviewDeck(
       label: "Source truth",
       state: stateFor(sourceScore),
       score: sourceScore,
-      signal: `${sourceTrust.sourceTrustScore}/100 · ${chartSource}`,
+      signal: `${sourceTrust.trustScore}/100 · ${chartSource}`,
       operatorAction: "Keep live, partial, fallback and blocked source modes visible before any AI wording sounds confident.",
     },
     {

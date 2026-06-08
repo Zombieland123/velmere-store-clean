@@ -201,7 +201,7 @@ export function buildPass429BrainSelfAuditConsensusRuntime(input: {
 
   const totalCost = checks.reduce((sum, check) => sum + (check.ok ? 0 : severityCost(check.severity)), 0);
   const selfAuditScore = clamp(100 - totalCost + Math.min(10, evidenceRailCount) - Math.min(10, missingDataCount * 1.2));
-  const rawResultConfidence = clamp(result.confidence);
+  const rawResultConfidence = clamp(result.confidence ?? 0);
   const sourceConfidence = clamp(brain.sourceGenome.confidence);
   const selfAuditCap = checks.some((check) => !check.ok && check.severity === "sealed")
     ? 28

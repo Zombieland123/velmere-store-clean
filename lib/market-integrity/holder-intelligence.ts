@@ -155,7 +155,7 @@ export function buildHolderIntelligence(result: TokenRiskResult) {
         share,
         risk: Math.round(clamp(node.risk * (0.88 + index / (cells * 5)))),
         confidence: round(node.confidence, 2),
-        role: node.id === "cex" ? "custody" : node.id === "dex" ? "liquidity" : node.id === "team" ? "team" : node.id === "retail" ? "retail" : node.id === "whales" ? "whale" : "source required",
+        role: node.id === "cex" ? "custody" : node.id === "dex" ? "liquidity" : node.id === "team" ? "team" : node.id === "retail" ? "retail" : node.id === "whales" ? "whale" : "unknown",
         evidence: node.dataStatus === "live" ? "source metric present" : node.dataStatus === "proxy" ? "proxy until labels/API connected" : "missing source — keep uncertainty",
       } satisfies ClusterCell;
     });

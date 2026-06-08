@@ -144,7 +144,7 @@ async function loadBinanceKlineProbe(query: string): Promise<Pass433ProviderProb
   if (!Array.isArray(rows) || rows.length < 2) throw new Error("binance_klines_empty");
   const first = Number((rows[0] as unknown[])[1]);
   const last = Number((rows.at(-1) as unknown[])[4]);
-  const volume = rows.reduce((sum, row) => sum + Number((row as unknown[])[5] || 0), 0);
+  const volume = rows.reduce<number>((sum, row) => sum + Number((row as unknown[])[5] || 0), 0);
   const change = first > 0 ? ((last - first) / first) * 100 : undefined;
   return {
     id: "binance_spot_klines",

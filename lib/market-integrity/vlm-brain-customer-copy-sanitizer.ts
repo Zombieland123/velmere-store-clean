@@ -9,7 +9,7 @@ function id(v:string){return c(v,"VLM-COPY-SANITIZER",260).toUpperCase().replace
 function sanitize(text:string){let out=text; for(const term of forbidden){out=out.replace(new RegExp(term,"ig"),"manual review");} return c(out,"Algorithmic risk flag requires source review. Missing data remains visible before any customer brief.",380)}
 export function buildVlmBrainCustomerCopySanitizer(pdf: VlmBrainPdfPreviewManifest, resolver: VlmBrainReleaseBlockerResolver, result: TokenRiskResult): VlmBrainCustomerCopySanitizer {
  const createdAt=result.generatedAt??pdf.createdAt??new Date().toISOString();
- const sourceText=[pdf.operatorSummary,resolver.operatorSummary,result.summary].join(" ");
+ const sourceText=[pdf.operatorSummary,resolver.operatorSummary,result.aiSummary].join(" ");
  const lower=sourceText.toLowerCase();
  const blockedTerms=forbidden.filter(t=>lower.includes(t));
  const redactionScore=Math.max(0,Math.min(100,Math.round(84-blockedTerms.length*10-resolver.p0Count*8)));

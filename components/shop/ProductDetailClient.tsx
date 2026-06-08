@@ -16,6 +16,7 @@ import LuxurySection from "@/components/layout/LuxurySection";
 import { useCart } from "@/components/CartProvider";
 import { fadeUp } from "@/lib/motion";
 import { trackVelmereEvent } from "@/lib/analytics";
+import type { ProductSizeMeasurement } from "@/lib/products/types";
 import {
   formatMoney,
   getLocalizedString,
@@ -31,7 +32,7 @@ import { buildPublicProductPathwayReceiptGate } from "@/lib/market-integrity/pub
 import { buildPublicProvenanceDropConciergeGate } from "@/lib/market-integrity/public-provenance-drop-concierge-gate";
 import { buildPublicSizeConfidenceConciergeGate } from "@/lib/market-integrity/public-size-confidence-concierge-gate";
 
-const MEASUREMENTS = [
+const MEASUREMENTS: ProductSizeMeasurement[] = [
   { size: "S", chest: "112 cm", length: "66 cm", shoulders: "58 cm" },
   { size: "M", chest: "118 cm", length: "68 cm", shoulders: "60 cm" },
   { size: "L", chest: "124 cm", length: "70 cm", shoulders: "62 cm" },
@@ -220,6 +221,10 @@ export default function ProductDetailPage({
   }
 
   const selectedProduct = product;
+  const truth = selectedProduct.truth;
+  const productMeasurements: ProductSizeMeasurement[] = truth?.sizeGuide.measurements.length
+    ? truth.sizeGuide.measurements
+    : MEASUREMENTS;
   const selectedVariant =
     selectedProduct.variants.find(
       (variant) => variant.id === selectedVariantId,
@@ -234,7 +239,7 @@ export default function ProductDetailPage({
     waitlistReady: !purchasable,
     dppTraceabilityReady: providerSnapshot.score >= 52,
     productProofScore: providerSnapshot.score,
-    sourceConfidence: publicCommerceTrimGate.customerProofScore,
+    sourceConfidence: providerSnapshot.score,
     liveWindowSeconds: purchasable ? 540 : 300,
     walletRequired: false,
     scarcityPressure: 0,
@@ -319,9 +324,7 @@ export default function ProductDetailPage({
   const category =
     selectedProduct.collection ?? selectedProduct.tags[0] ?? "GARMENT";
   const detailCopy = productDetailCopy(locale);
-  const truth = selectedProduct.truth;
   const careLines = truth?.care.map((item) => getLocalizedString(item, locale)) ?? [];
-  const productMeasurements = truth?.sizeGuide.measurements.length ? truth.sizeGuide.measurements : MEASUREMENTS;
   const productSpecs = truth
     ? [
         [detailCopy.specs[0]?.[0] ?? "Material", getLocalizedString(truth.material, locale)],

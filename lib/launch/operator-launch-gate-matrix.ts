@@ -28,6 +28,12 @@ export function buildOperatorLaunchGateMatrix(): OperatorLaunchGateItem[] {
   const auditSummary = getAdminAuditPersistenceSummary();
   const serverGate = getAdminAuditServerGate();
   const sessionPreview = getAdminSessionPreviewFromEnv();
+  const serverReady = serverGate.enabled && serverGate.hasAuthContext && serverGate.hasStorage;
+  const serverMissing = [
+    !serverGate.enabled ? "server gate disabled" : null,
+    !serverGate.hasAuthContext ? "auth context missing" : null,
+    !serverGate.hasStorage ? "durable storage missing" : null,
+  ].filter((item): item is string => Boolean(item));
   const adminAuth = adminRouteGateMatrix.find((item) => item.id === "admin-auth");
   const envGate = adminRouteGateMatrix.find((item) => item.id === "environment-gate");
   const publishGate = adminRouteGateMatrix.find((item) => item.id === "publish-permission");
@@ -62,12 +68,12 @@ export function buildOperatorLaunchGateMatrix(): OperatorLaunchGateItem[] {
     {
       id: "server-audit-write",
       label: "Server audit write",
-      status: serverGate.canWrite ? "partial" : "blocked",
-      progress: serverGate.canWrite ? 62 : 40,
+      status: serverReady ? "partial" : "blocked",
+      progress: serverReady ? 62 : 40,
       priority: "P0",
       surface: "audit",
       promise: "Audit writes must be server-side and return a locked preview when auth/storage is incomplete.",
-      blocker: serverGate.missing.join(" · ") || "storage / auth still incomplete",
+      blocker: serverMissing.join(" · ") || "storage / auth still incomplete",
       nextStep: "Connect audit write contract to durable storage and operator session.",
     },
     {
@@ -128,12 +134,12 @@ export function buildOperatorLaunchGateMatrix(): OperatorLaunchGateItem[] {
     {
       id: "session-preview",
       label: "Session preview honesty",
-      status: sessionPreview.isAuthenticated ? "partial" : "blocked",
-      progress: sessionPreview.isAuthenticated ? 58 : 26,
+      status: sessionPreview.authenticated ? "partial" : "blocked",
+      progress: sessionPreview.authenticated ? 58 : 26,
       priority: "P1",
       surface: "security",
       promise: "The UI tells operators when they are in preview/locked mode instead of pretending production auth is ready.",
-      blocker: sessionPreview.isAuthenticated ? "session is preview only" : "authenticated session missing",
+      blocker: sessionPreview.authenticated ? "session is preview only" : "authenticated session missing",
       nextStep: "Replace preview session with real server auth provider and role checks.",
     },
   ];

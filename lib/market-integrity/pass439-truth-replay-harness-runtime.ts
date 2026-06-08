@@ -125,7 +125,8 @@ export function buildPass439TruthReplayHarnessRuntime(input: {
   const executionConflicts = input.pass438.providerExecutionLedger.some((item) => item.executionRisk === "sealed" || item.state === "blocked");
   const hasConflict = input.pass436.releaseDecision === "operator_interrupt" || executionConflicts;
   const hasLivePrice = typeof input.result.metrics.currentPrice === "number" && Number.isFinite(input.result.metrics.currentPrice);
-  const sourceConfidence = input.result.confidence <= 1 ? input.result.confidence * 100 : input.result.confidence;
+  const rawConfidence = input.result.confidence ?? 0.35;
+  const sourceConfidence = rawConfidence <= 1 ? rawConfidence * 100 : rawConfidence;
   const liveReadiness = input.pass435.liveReadinessScore ?? 0;
   const executionScore = input.pass438.executionScore ?? 0;
   const baseConfidence = clamp((sourceConfidence * 0.25) + (liveReadiness * 0.35) + (executionScore * 0.4));

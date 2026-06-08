@@ -168,7 +168,7 @@ export function buildTerminalRuntimeHealth(
       (modalChunkSplit ? 18 : 0) +
       (terminalBootDeferred ? 18 : 0) +
       (heavyPanelsDeferred ? 10 : 0) +
-      Math.min(10, Math.round(performance.performanceScore / 10)),
+      Math.min(10, Math.round(performance.score / 10)),
   );
   const chartScore = clamp(
     18 +
@@ -181,7 +181,7 @@ export function buildTerminalRuntimeHealth(
   );
   const historyScore = clamp(24 + Math.min(50, historyCount * 3));
   const sourceScore = clamp(
-    sourceTrust.sourceTrustScore - (input.sourceCooldownActive ? 10 : 0),
+    sourceTrust.trustScore - (input.sourceCooldownActive ? 10 : 0),
   );
   const evidenceScore = clamp(evidenceExport.exportReadinessScore);
   const mapScore = clamp(
@@ -236,7 +236,7 @@ export function buildTerminalRuntimeHealth(
       label: "Source trust runtime",
       state: laneState(sourceScore),
       score: sourceScore,
-      detail: `${sourceTrust.sourceTrustScore}/100 source trust · cooldown ${input.sourceCooldownActive ? "active" : "clear"}`,
+      detail: `${sourceTrust.trustScore}/100 source trust · cooldown ${input.sourceCooldownActive ? "active" : "clear"}`,
       operatorAction: "Keep local-first search, cooldown visibility and server-side rate limits before public launch.",
     },
     {

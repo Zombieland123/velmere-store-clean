@@ -1,5 +1,5 @@
 import type { TokenRiskResult } from "./risk-types";
-import type { Pass435LiveQueryTestBenchRuntime } from "./pass435-live-query-test-bench";
+import type { Pass435LiveQueryTestBench } from "./pass435-live-query-test-bench";
 import type { Pass439TruthReplayHarnessRuntime } from "./pass439-truth-replay-harness-runtime";
 import type { Pass440SemanticDriftSourceLineageRuntime } from "./pass440-semantic-drift-source-lineage-runtime";
 import type { Pass433ProviderProbe } from "./pass433-real-internet-data-arbitration";
@@ -115,7 +115,7 @@ function hasProbeField(attempts: Pass433ProviderProbe[] = [], field: keyof Pick<
 
 export function buildPass441BrainEvalHarnessRuntime(input: {
   result: TokenRiskResult;
-  pass435: Pass435LiveQueryTestBenchRuntime;
+  pass435: Pass435LiveQueryTestBench;
   pass439: Pass439TruthReplayHarnessRuntime;
   pass440: Pass440SemanticDriftSourceLineageRuntime;
   providerAttempts?: Pass433ProviderProbe[];
@@ -132,8 +132,9 @@ export function buildPass441BrainEvalHarnessRuntime(input: {
   const lineageClean = input.pass440.driftState === "semantic_aligned" || input.pass440.driftState === "semantic_guarded";
   const replayClean = input.pass439.replayState === "replay_clean" || input.pass439.replayState === "replay_partial";
   const pdfAllowedUpstream = input.pass439.releaseGate.pdfAllowed && input.pass440.pdfChatGate.pdfAllowed;
-  const factsOnlyUpstream = input.pass435.pdfChatGate.factsOnly || input.pass439.releaseGate.factsOnly || input.pass440.pdfChatGate.factsOnly;
-  const missingCount = input.result.dataQuality === "complete" ? 0 : input.pass435.missingDataReplay.length;
+  const pass435FactsOnly = input.pass435.releaseMode === "facts_only_no_live_claim" || input.pass435.releaseMode === "block_pdf_until_probe";
+  const factsOnlyUpstream = pass435FactsOnly || input.pass439.releaseGate.factsOnly || input.pass440.pdfChatGate.factsOnly;
+  const missingCount = input.pass435.missingDataReplay.length;
   const liveReadiness = input.pass435.liveReadinessScore;
 
   const cases: Pass441BrainEvalCase[] = [

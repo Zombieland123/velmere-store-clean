@@ -20,10 +20,10 @@ export type UniversalAssetRow = {
   secondSourceLane: string;
   riskPressure: number;
   confidenceFloor: number;
-  adapterState: "live_first" | "provider_required" | "slow_macro" | "historical_context" | "operator_review";
+  adapterState: "live_first" | "provider_required" | "slow_macro" | "historical_context" | "operator_review" | "daily_reference" | "provider_ready_no_fake_live";
   humanCopy: string;
   nextAdapterStep: string;
-  sparkTone: "down" | "up" | "flat" | "watch";
+  sparkTone: "down" | "up" | "flat" | "watch" | "volatile";
 };
 
 export type UniversalAssetMetricContract = {

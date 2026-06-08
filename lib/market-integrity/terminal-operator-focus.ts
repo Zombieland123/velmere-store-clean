@@ -177,7 +177,7 @@ export function buildTerminalOperatorFocus(
       (commandGroup(activeCommand) ? 10 : 0) +
       (heavyPanelsDeferred ? 8 : 0),
   );
-  const sourceScore = clamp(sourceTrust.sourceTrustScore - (input.sourceCooldownActive ? 10 : 0));
+  const sourceScore = clamp(sourceTrust.trustScore - (input.sourceCooldownActive ? 10 : 0));
   const aiScore = clamp(
     34 +
       Math.round((result.confidence ?? 0.38) * 26) +
@@ -216,7 +216,7 @@ export function buildTerminalOperatorFocus(
       label: "Source confidence",
       state: laneState(sourceScore),
       score: sourceScore,
-      detail: `${sourceTrust.sourceTrustScore}/100 source trust · ${chartSource}`,
+      detail: `${sourceTrust.trustScore}/100 source trust · ${chartSource}`,
       operatorAction: "Live, partial, fallback and blocked sources must stay visible before any evidence or AI summary is trusted.",
     },
     {

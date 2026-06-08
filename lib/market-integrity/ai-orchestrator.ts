@@ -50,7 +50,7 @@ export function buildAiRiskOrchestrator(result: TokenRiskResult, history: Histor
     ? Math.round((history.at(-1)?.score ?? result.score) - (history[0]?.score ?? result.score))
     : 0;
   const liquidity = finite(result.metrics.liquidityUsd);
-  const marketCap = finite(result.metrics.marketCap) ?? finite(result.metrics.marketCapUsd);
+  const marketCap = finite(result.metrics.marketCap);
   const liquidityCoverage = liquidity && marketCap ? (liquidity / marketCap) * 100 : undefined;
   const holderMissing = result.metrics.top10HolderPercent === undefined || result.metrics.holderCount === undefined;
   const klineHint = Math.abs(result.metrics.priceChange1h ?? 0) > 4
@@ -102,7 +102,8 @@ export function buildAiRiskOrchestrator(result: TokenRiskResult, history: Histor
       owner: "data",
       score: result.dataQuality === "live" ? 28 : 70,
     },
-  ].sort((a, b) => b.score - a.score);
+  ];
+  actionCandidates.sort((a, b) => b.score - a.score);
 
   const topStress = [...stress.scenarios].sort((a, b) => b.score - a.score)[0];
   const overall = Math.round(clamp(

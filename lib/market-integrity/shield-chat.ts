@@ -546,7 +546,7 @@ export function buildShieldChatResponse(
         )
       : 0;
   const liquidityRaw = result.metrics.liquidityUsd;
-  const marketCapRaw = result.metrics.marketCap ?? result.metrics.marketCapUsd;
+  const marketCapRaw = result.metrics.marketCap;
   const liquidity = n(liquidityRaw);
   const marketCap = n(marketCapRaw);
   const liqCoverage =
@@ -565,7 +565,7 @@ export function buildShieldChatResponse(
   const sourceState: ShieldChatResponse["sourceState"] =
     result.dataQuality === "live" && confidence >= 65
       ? "source_bound"
-      : result.dataQuality === "missing" || confidence < 35
+      : result.dataQuality === "demo" || confidence < 35
         ? "source_required"
         : "partial";
 
@@ -575,7 +575,7 @@ export function buildShieldChatResponse(
       value: `${result.score}/100`,
       tone: tone(result.score),
       body: dominantSignal
-        ? `${c.dominantSignal}: ${dominantSignal.label}.`
+        ? `${c.dominantSignal}: ${dominantSignal.id.replaceAll("_", " ")}.`
         : c.noDominantSignal,
     },
     {

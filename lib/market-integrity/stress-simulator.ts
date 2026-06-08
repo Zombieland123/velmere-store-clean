@@ -34,7 +34,7 @@ function slippageForSell(liquidityUsd: number, sellUsd: number, baseSlippage?: n
 
 export function buildStressScenarios(result: TokenRiskResult) {
   const liquidityUsd = safeNumber(result.metrics.liquidityUsd);
-  const marketCap = safeNumber(result.metrics.marketCapUsd);
+  const marketCap = safeNumber(result.metrics.marketCap);
   const volume24h = safeNumber(result.metrics.volume24h);
   const volumeRatio = safeNumber(result.metrics.volumeToMarketCapRatio);
   const baseSlippage = result.metrics.simulatedSlippage10k;

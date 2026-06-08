@@ -149,8 +149,9 @@ function signalEvents(result: TokenRiskResult): RiskReplayEvent[] {
 function buildPhases(result: TokenRiskResult, holder: ReturnType<typeof buildHolderIntelligence>, delta: number): RiskReplayPhase[] {
   const metrics = result.metrics;
   const velocity = clamp(Math.abs(finite(metrics.priceChange24h) ?? 0) * 1.15 + Math.abs(finite(metrics.priceChange7d) ?? 0) * 0.36);
+  const liquidityUsd = finite(metrics.liquidityUsd);
   const liquidity = clamp(
-    (finite(metrics.liquidityUsd) ? Math.max(0, 70 - Math.log10(Math.max(10, metrics.liquidityUsd)) * 8) : 58) +
+    (liquidityUsd !== undefined ? Math.max(0, 70 - Math.log10(Math.max(10, liquidityUsd)) * 8) : 58) +
       (finite(metrics.simulatedSlippage10k) ?? 0) * 1.8,
   );
   const holderScore = holder.holderRiskScore;

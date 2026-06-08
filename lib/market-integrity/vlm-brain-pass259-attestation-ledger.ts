@@ -211,7 +211,7 @@ export function buildVlmBrainPass259AttestationLedger(
       state: "blocked" as const,
       acceptance: "Release owner may only review after source, redaction, storage and browser attestations exist.",
       blockerReason: "Attestation ledger is still incomplete; promotion remains frozen.",
-    },
+    } satisfies VlmBrainPass259PromotionChecklistItem,
   ]);
   const top = attestations.find((item) => item.state === "missing_attestation")
     ?? attestations.find((item) => item.state === "capture_required")

@@ -1113,7 +1113,8 @@ export async function POST(request: Request) {
     );
   }
 
-  const selectedDepth = resolveLensPdfDepth(request.nextUrl.searchParams.get("tier"));
+  const requestUrl = new URL(request.url);
+  const selectedDepth = resolveLensPdfDepth(requestUrl.searchParams.get("tier"));
   const pdf = buildPdf(payload, selectedDepth);
   const filename = `velmere-lens-${payload.symbol || "report"}`
     .toLowerCase()

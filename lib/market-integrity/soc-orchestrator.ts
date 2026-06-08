@@ -85,6 +85,7 @@ export function buildSocTerminalBrief(result: TokenRiskResult, history: HistoryL
     source: result.chart?.sevenDay?.length ? "sparkline" : "metric fallback",
   });
   const worstStress = getWorstStressScenario(stress);
+  const worstStressScore = worstStress?.score ?? 0;
   const historyDelta = history.length >= 2
     ? Math.round((history.at(-1)?.score ?? result.score) - (history[0]?.score ?? result.score))
     : 0;
@@ -116,12 +117,12 @@ export function buildSocTerminalBrief(result: TokenRiskResult, history: HistoryL
     });
   }
 
-  if ((liquidityCoverage ?? 100) < 3 || (result.metrics.simulatedSlippage10k ?? 0) > 2.5 || worstStress?.score >= 62) {
+  if ((liquidityCoverage ?? 100) < 3 || (result.metrics.simulatedSlippage10k ?? 0) > 2.5 || worstStressScore >= 62) {
     pushCommand(queue, {
       id: "exit-depth-review",
       label: "Verify exit liquidity",
       priority: 90,
-      severity: worstStress?.score >= 75 ? "critical" : "warning",
+      severity: worstStressScore >= 75 ? "critical" : "warning",
       reason: `Liquidity coverage=${liquidityCoverage === undefined ? "source required" : pct(liquidityCoverage)}, worst stress=${worstStress?.score ?? "source required"}/100.`,
       action: "Open depth/heatmap, check bid support, simulate sell pressure and mark unsupported pairs as uncertainty.",
       layer: "liquidity",

@@ -150,7 +150,7 @@ export function buildProductionHardening(
       (hasOrderBook ? 8 : 0) +
       (holder.dataCompleteness >= 70 ? 6 : 0),
   );
-  const vlmScore = clamp(46 + access.featureMatrix.filter((item) => item.status !== "blocked").length * 7 + access.complianceGuardrails.length * 4);
+  const vlmScore = clamp(46 + access.featureMatrix.filter((item) => item.status === "open" || item.status === "api_ready").length * 7 + access.complianceGuardrails.length * 4);
   const legalScore = clamp(58 + evidence.legalGuardrails.length * 5 + workspace.legalGuardrails.length * 5 + (result.score >= 85 ? -6 : 0));
 
   const gates: ProductionHardeningGate[] = [

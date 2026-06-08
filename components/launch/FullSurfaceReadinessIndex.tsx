@@ -16,7 +16,13 @@ function resolveLocale(locale: string): Locale {
   return locale === "pl" || locale === "de" || locale === "en" ? locale : "en";
 }
 
-const copy = {
+type ReadinessCopy = {
+  kicker: string; title: string; body: string; ready: string; review: string; blocked: string; next: string;
+  surface: Record<Surface, string>;
+  lanes: ReadonlyArray<readonly [string, string]>;
+};
+
+const copy: Record<Locale, ReadinessCopy> = {
   pl: {
     kicker: "launch readiness index",
     title: "Jedna mapa tego, co blokuje start.",
@@ -92,7 +98,7 @@ const copy = {
       ["Commerce truth", "Provider, payment, shipping, returns and product status before public launch."],
     ],
   },
-} as const;
+};
 
 function scoreForLane(index: number, surface: Surface) {
   const base = [86, 68, 58, 63, 78, 60][index] ?? 60;
@@ -100,7 +106,7 @@ function scoreForLane(index: number, surface: Surface) {
   return Math.max(34, Math.min(96, base + weight * 2 - (index === 2 || index === 3 ? 2 : 0)));
 }
 
-function statusForScore(score: number, c: (typeof copy)["en"]) {
+function statusForScore(score: number, c: ReadinessCopy) {
   if (score >= 78) return { label: c.ready, className: "fsri-status-ready" };
   if (score >= 58) return { label: c.review, className: "fsri-status-review" };
   return { label: c.blocked, className: "fsri-status-blocked" };

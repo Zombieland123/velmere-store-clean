@@ -378,7 +378,7 @@ export function buildPass422BrainMemoryCore(
   const adaptiveWeights = buildAdaptiveWeights(evidenceRail, memory, sourceGenome);
   const pass424 = buildPass424BrainErrorCorrectionCore({
     score: result.score,
-    confidence: result.confidence,
+    confidence: result.confidence ?? 0.34,
     memory,
     longTermMemory,
     sourceGenome,

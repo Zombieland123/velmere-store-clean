@@ -107,7 +107,7 @@ export default function AccountOrderEventTimelinePanel({
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/[0.36]">{id}</p>
-                      <span>{status === "ready" ? t.ready : status === "review" ? t.review : t.blocked}</span>
+                      <span>{status === "review" ? t.review : t.blocked}</span>
                     </div>
                     <h3 className="mt-1 text-sm font-semibold text-white/[0.86]">{label}</h3>
                     <p className="mt-1 text-xs leading-6 text-white/[0.54]">{body}</p>

@@ -74,7 +74,7 @@ const localeLine: Record<"pl" | "en" | "de", string> = {
   de: "Ein Payload speist Suche, Modal, Orbit Brain, Vorschau und PDF; die öffentliche Oberfläche zeigt Quelle, Chart, Nachweis, Grenzen und kurze Felder ohne Zufallstexte.",
 };
 
-export function buildPass407TerminalPayloadIntegrityReadout(input: {
+export function buildPass408TerminalLocaleProofReadout(input: {
   symbol: string;
   name: string;
   type: string;

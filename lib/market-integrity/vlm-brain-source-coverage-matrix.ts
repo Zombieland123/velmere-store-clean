@@ -178,7 +178,7 @@ function buildCoverageLanes(
       "Report/export gate",
       72 - (redactionBlocked ? 24 : 0) - (durabilityBlocked ? 24 : 0) - (queueBlockers * 8),
       redactionBlocked || durabilityBlocked,
-      timeline.ownerGate.durableWrite !== "connected" && timeline.ownerGate.timelineStorage !== "durable_case_store",
+      timeline.ownerGate.durableWrite === "not_connected" || timeline.ownerGate.timelineStorage === "client_preview_only",
       `Firewall: ${firewall.releaseState}; PDF gate: ${firewall.pdfRouteGate}; timeline storage: ${timeline.ownerGate.timelineStorage}.`,
       "Persist the case, keep operator-only fields internal and run redaction review before PDF-ready export.",
     ),

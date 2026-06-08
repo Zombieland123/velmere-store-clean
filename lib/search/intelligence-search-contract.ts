@@ -75,7 +75,8 @@ export type VelmereMarketSnapshot = {
     | "sec_aligned"
     | "sec_partial"
     | "sec_divergent"
-    | "sec_required";
+    | "sec_required"
+    | "not_applicable";
   fundamentalSecCoverage?: number;
   fundamentalFilingAgeDays?: number;
   fundamentalReportedPeriodEnd?: string;

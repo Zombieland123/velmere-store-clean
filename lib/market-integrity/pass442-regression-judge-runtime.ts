@@ -132,7 +132,8 @@ export function buildPass442BrainRegressionJudgeRuntime(input: {
   const truthReplaySafe = input.pass439.replayState === "replay_clean" || input.pass439.replayState === "replay_partial";
   const driftSafe = input.pass440.driftState === "semantic_aligned" || input.pass440.driftState === "semantic_guarded";
   const evalSafe = input.pass441.evalMode === "eval_green" || input.pass441.evalMode === "eval_guarded";
-  const factsOnly = input.pass435.pdfChatGate.factsOnly || input.pass439.releaseGate.factsOnly || input.pass440.pdfChatGate.factsOnly || input.pass441.pdfChatGate.factsOnly;
+  const pass435FactsOnly = input.pass435.releaseMode === "facts_only_no_live_claim" || input.pass435.releaseMode === "block_pdf_until_probe";
+  const factsOnly = pass435FactsOnly || input.pass439.releaseGate.factsOnly || input.pass440.pdfChatGate.factsOnly || input.pass441.pdfChatGate.factsOnly;
   const coreFieldScore = clamp([hasPrice, hasChange, hasVolume, hasCandles].filter(Boolean).length * 25);
   const checks: Pass442RegressionCheck[] = [
     check({

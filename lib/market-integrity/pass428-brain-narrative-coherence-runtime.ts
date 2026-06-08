@@ -150,7 +150,7 @@ export function buildPass428BrainNarrativeCoherenceRuntime(input: {
       : brain.pass425.hallucinationBrake.allowance === "bounded_analysis" ? 78
         : 92;
   const displayedConfidenceCap = clamp(Math.min(integrityCap, sourceCap, hallucinationCap));
-  const effectiveConfidence = clamp(Math.min(displayedConfidenceCap, result.confidence));
+  const effectiveConfidence = clamp(Math.min(displayedConfidenceCap, result.confidence ?? 0));
 
   const repairPlan: Pass428BrainNarrativeCoherenceRuntime["repairPlan"] = [];
   if (duplicateBodyCount) repairPlan.push({ id: "dedupe_repeated_pdf_bodies", action: "dedupe", target: "pdf", reason: `${duplicateBodyCount} repeated narrative body item(s) detected.` });

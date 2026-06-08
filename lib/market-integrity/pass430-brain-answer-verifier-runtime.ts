@@ -284,7 +284,7 @@ export function buildPass430BrainAnswerVerifierRuntime(input: {
     proofLedger,
     memoryLearningFence: {
       retentionYears: brain.longTermMemory.retentionYears,
-      hotWindowDays: brain.longTermMemory.hotWindowDays,
+      hotWindowDays: brain.longTermMemory.policy.hotWindowDays,
       archiveAllowed: true,
       adaptiveLearningAllowed: proofState === "verified" && pass429.memoryLearningGate.learningAllowed,
       maxAdaptiveWeight: round(proofState === "verified" ? Math.min(0.28, memoryLearningWeight) : Math.min(0.08, memoryLearningWeight), 3),

@@ -89,7 +89,7 @@ function pdfBlocked(gate: PdfForgeComposerGate) {
 }
 
 function layoutNeedsReplay(gate: LayoutStabilitySentinelGate) {
-  return gate.status === "layout_quarantined" || gate.status === "scroll_watch" || gate.blockers.length > 0;
+  return gate.status === "layout_quarantined" || gate.status === "scroll_watch" || gate.fixes.length > 0;
 }
 
 function previewNeedsReplay(gate: LensReportPreviewGate) {

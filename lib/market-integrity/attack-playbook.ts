@@ -208,7 +208,10 @@ export function buildAttackSurface(result: TokenRiskResult): ShieldAttackSurface
         metric("sources", result.dataSources.length),
       ].filter(Boolean) as Array<{ label: string; value: number | string }>,
     },
-  ].map((vector) => ({ ...vector, severity: severityFromScore(vector.score) }));
+  ];
+  for (const vector of vectors) {
+    vector.severity = severityFromScore(vector.score);
+  }
 
   const sorted = [...vectors].sort((a, b) => b.score - a.score);
   const activeLayers = vectors.filter((vector) => vector.confidence >= 0.55 || vector.evidenceSignalIds.length > 0).map((vector) => vector.id);

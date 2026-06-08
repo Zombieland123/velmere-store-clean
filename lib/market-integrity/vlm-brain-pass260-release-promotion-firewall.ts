@@ -134,12 +134,28 @@ function laneFromAttestation(attestation: VlmBrainPass259LedgerAttestation): Vlm
   };
 }
 
+function promotionOwnerFromChecklist(
+  owner: VlmBrainPass259PromotionChecklistItem["owner"],
+): VlmBrainPass260PromotionLane["owner"] {
+  switch (owner) {
+    case "source_reviewer": return "source";
+    case "redaction_reviewer": return "redaction";
+    case "browser_qa":
+    case "browser_trace": return "browser";
+    case "storage_owner": return "storage";
+    case "report_owner": return "report";
+    case "access_owner": return "wallet";
+    case "release_owner": return "release_owner";
+    default: return "copy";
+  }
+}
+
 function laneFromChecklist(item: VlmBrainPass259PromotionChecklistItem): VlmBrainPass260PromotionLane {
   return {
     id: stableId(`PASS260-CHECKLIST-LANE-${item.id}`),
     lane: item.owner === "release_owner" ? "release_owner" : "copy",
     label: compact(item.label, "Promotion checklist lane", 100),
-    owner: item.owner === "browser_trace" ? "release_owner" : item.owner,
+    owner: promotionOwnerFromChecklist(item.owner),
     priority: item.priority,
     state: stateFromChecklist(item.state),
     sourceState: item.state,

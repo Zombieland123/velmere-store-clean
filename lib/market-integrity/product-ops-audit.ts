@@ -109,7 +109,7 @@ export function buildProductOpsAudit(
   );
   const auditLogScore = clamp(30 + Math.min(32, historyCount * 2.4) + (result.generatedAt ? 8 : 0) + (result.dataSources.length >= 2 ? 8 : 0));
   const abuseControlScore = clamp(58 + (access.pass60PolicySpine.length >= 3 ? 9 : 0) + (readiness.legalGuardrails.length >= 3 ? 9 : 0));
-  const vlmPolicyScore = clamp(access.featureMatrix.filter((item) => item.status !== "blocked").length * 10 + 36);
+  const vlmPolicyScore = clamp(access.featureMatrix.filter((item) => item.status === "open" || item.status === "api_ready").length * 10 + 36);
   const psychologyScore = clamp(70 + (liquidity.uncertaintyPercent < 45 ? 6 : 0) + (evidence.sourceLedger.length >= 5 ? 5 : 0) - (result.score >= 82 ? 5 : 0));
 
   const gates: ProductOpsAuditGate[] = [
